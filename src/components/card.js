@@ -1,18 +1,18 @@
-export {createCard, deleteCard, addLike}
+export {createCard}
 
-const createCard = (el, deleteCard, addLike, openImg) => {
+const createCard = ({name, link, openImg}) => {
   const cardTemplate = document.querySelector('#card-template').content;
-  const element = cardTemplate.cloneNode(true);
+  const element = cardTemplate.querySelector(".card").cloneNode(true);
   const img = element.querySelector(".card__image");
   const title = element.querySelector(".card__title");
   const deleteButton = element.querySelector(".card__delete-button");
   const likeButton = element.querySelector('.card__like-button');
   deleteButton.addEventListener("click", (evt) => deleteCard(evt));
   likeButton.addEventListener('click', addLike);
-  img.src = el.link;
-  title.textContent = el.name;
-  img.alt = el.name;
-  img.addEventListener('click', () => openImg(el))
+  img.src = link;
+  title.textContent = name;
+  img.alt = name;
+  img.addEventListener('click', () => openImg(name, link))
   return element;
 };
 
@@ -23,7 +23,9 @@ const deleteCard = (evt) => {
 
 // Функция добавления лайка
 function addLike(evt) {
-  evt.target.classList.toggle('card__like-button_is-active');
+  evt.target.classList.add('card__like-button_is-active');
   }
+
+
 
 

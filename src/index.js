@@ -1,6 +1,6 @@
 import './pages/index.css';
 import {initialCards} from './components/cards.js';
-import {addLike, createCard, deleteCard} from './components/card.js';
+import {createCard} from './components/card.js';
 import {openModal, closeModal, closePopapButton, closePopupByOverlay} from './components/modal.js';
 
 const placesList = document.querySelector('.places__list');
@@ -8,23 +8,20 @@ const popupTypeEdit = document.querySelector('.popup_type_edit'); // Попап 
 const profileEditButton = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
 const profileAddButton = document.querySelector('.profile__add-button'); // Кнопка добавления попапа карточки
 const popupTypeNewCard = document.querySelector('.popup_type_new-card'); // Попап добавления попапа карточки
-const modalsOpen = document.querySelectorAll('.popup'); // Псевдомассив открытых попапов
 const profileTitle = document.querySelector('.profile__title'); // Поле имя
-const formEdit = document.forms['edit-profile']; // Форма имени
-const popapTitle = formEdit.elements.name; // Имя
+const formEditProfile = document.forms['edit-profile']; // Форма имени
+const popapTitle = formEditProfile.elements.name; // Имя
 const profileDescription = document.querySelector('.profile__description'); // Поле профессия 
-const popapDescription = formEdit.elements.description; // Профессия 
-const formElement = document.forms['new-place'];
-const namePlace = formElement.elements['place-name'];
-const linkInput = formElement.elements.link;
+const popapDescription = formEditProfile.elements.description; // Профессия 
+const formNewPlace = document.forms['new-place'];
 const popupImageContainer = document.querySelector('.popup_type_image');
 const popupImage = popupImageContainer.querySelector('.popup__image');
 const imgContent = popupImageContainer.querySelector('.popup__caption');
-const cardName = document.querySelector('.popup__input_type_card-name');
-const cardLink = document.querySelector('.popup__input_type_url');
+const popupCardName = document.querySelector('.popup__input_type_card-name');
+const popupTypeUrl = document.querySelector('.popup__input_type_url');
 
 initialCards.forEach(el => {
-  const card = createCard(el, deleteCard, addLike, openImg);
+  const card = createCard({...el, openImg});
   placesList.append(card);
 });
 
@@ -40,24 +37,17 @@ profileAddButton.addEventListener('click', () => {
   openModal(popupTypeNewCard);
 })
 
-// Вызов функции удаления попапа х3 
-closePopapButton(popupTypeNewCard);
-closePopapButton(popupTypeEdit);
-closePopapButton(popupImageContainer);
-
-// Закрытие попапа по оверлею и плавное открытие и закрытие попапов
-modalsOpen.forEach((element) => {
-    closePopupByOverlay(element)
-    element.classList.add('popup_is-animated');
-})
+document.querySelectorAll('.popup').forEach( popup => {
+  closePopapButton(popup);
+  closePopupByOverlay(popup) ;
+  popup.classList.add('popup_is-animated');
+}); 
 
 // Функция редактирования имени и информации о себе
 function handleFormSubmit(evt) {
     evt.preventDefault();
-    const popapTitleChange = popapTitle.value
-    const popapDescriptionChange = popapDescription.value
-    profileTitle.textContent = popapTitleChange
-    profileDescription.textContent = popapDescriptionChange
+    profileTitle.textContent = popapTitle.value
+    profileDescription.textContent = popapDescription.value
     closeModal(popupTypeEdit);
 }
 
@@ -65,26 +55,28 @@ function handleFormSubmit(evt) {
 function newCardFormSubmit(evt) {
     evt.preventDefault();
     const newObjects = {
-      name: cardName.value,
-      link: cardLink.value
+      name: popupCardName.value,
+      link: popupTypeUrl.value,
+      openImg
     };
-    const addCard = createCard(newObjects, deleteCard, openImg);
+    const addCard = createCard(newObjects);
     placesList.prepend(addCard);
-    formElement.reset();
+    formNewPlace.reset();
     closeModal(popupTypeNewCard);
   }
-
+  
 // Обработчики сабмитов х2
-formEdit.addEventListener('submit', handleFormSubmit);
-formElement.addEventListener('submit', newCardFormSubmit)
+formEditProfile.addEventListener('submit', handleFormSubmit);
+formNewPlace.addEventListener('submit', newCardFormSubmit)
 
-// Функция открытия модальной карточки
-function openImg(item) {
-  popupImage.src = item.link;
-  popupImage.alt = item.name;
-  imgContent.textContent = item.name;
+ // Функция открытия модальной карточки
+ function openImg(name, link) {
+  popupImage.src = link;
+  popupImage.alt = name;
+  imgContent.textContent = name;
   openModal(popupImageContainer)
 }
+
 
 
 
