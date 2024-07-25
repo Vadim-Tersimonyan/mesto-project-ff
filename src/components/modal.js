@@ -8,7 +8,6 @@ function openPopup (popup) {
 function closePopup (popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', handleEscClosePopup);
-  popup.querySelector('.popup__form').reset();
 };
 
 function handleEscClosePopup (evt) {

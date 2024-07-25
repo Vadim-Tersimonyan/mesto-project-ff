@@ -25,12 +25,8 @@ export const getUserInfo = () => {
       'Content-Type': config.headers['Content-Type']
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .catch(err => console.log(err));
+    .then(handleResponse)
+    .catch(handleError);
 };
 
 export const getInitialCards = () => {
@@ -40,12 +36,8 @@ export const getInitialCards = () => {
       'Content-Type': config.headers['Content-Type']
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .catch(err => console.log(err));
+    .then(handleResponse)
+    .catch(handleError);
 };
 
 export const editUserInfo = (name, about) => {
@@ -60,12 +52,8 @@ export const editUserInfo = (name, about) => {
       about
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .catch(err => console.log(err));
+    .then(handleResponse)
+    .catch(handleError);
 };
 
 export const addCard = (name, link) => {
@@ -80,12 +68,8 @@ export const addCard = (name, link) => {
       link
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
-    .catch(err => console.log(err));
+    .then(handleResponse)
+    .catch(handleError);
 };
 
 export const fetchDeleteCard = (cardId) => {

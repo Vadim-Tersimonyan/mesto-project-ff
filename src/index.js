@@ -50,7 +50,7 @@ let idCardForDelete = null;
 let cardElementForDelete = null;
 let userId = null;
 
-const renderCard = (item, method = "prepend") => {
+const renderCard = (item, method = "append") => {
   const cardDataConfig = {
     onOpenPopupData: openPopupData,
     onDelete: cardDelete,
@@ -181,6 +181,7 @@ const likeCard = (cardId, cardElement) => {
 profileButton.addEventListener('click', () => {
   openPopup(profilePopup);
   clearValidation(profileForm, validationConfig);
+  document.querySelector('.popup__form').reset();
   profileFormNameInput.value = profileName.textContent;
   profileFormJobInput.value = profileJob.textContent;
 });
@@ -188,6 +189,7 @@ profileButton.addEventListener('click', () => {
 newCardAddButton.addEventListener('click', () => {
   openPopup(newCardAddPopup);
   clearValidation(addCardForm, validationConfig);
+  document.querySelector('.popup__form').reset();
   addCardFormNameInput.value = '';
   addCardFormLinkInput.value = '';
 });
