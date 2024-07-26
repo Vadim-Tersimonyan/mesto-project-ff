@@ -50,7 +50,7 @@ let idCardForDelete = null;
 let cardElementForDelete = null;
 let userId = null;
 
-const renderCard = (item, method = "append") => {
+const renderCard = (item, method = 'prepend') => {
   const cardDataConfig = {
     onOpenPopupData: openPopupData,
     onDelete: cardDelete,
@@ -71,7 +71,7 @@ const handleAddCardForm = (evt) => {
   addCardSubmitButton.style.cursor = 'not-allowed';
   addCard(addCardFormNameInput.value, addCardFormLinkInput.value)
     .then((result) => {
-      const card = renderCard({ ...result, ownerId: userId });
+      const card = renderCard({ ...result, ownerId: userId }, 'prepend');
       evt.target.reset();
       closePopup(newCardAddPopup);
       return card;
@@ -181,23 +181,20 @@ const likeCard = (cardId, cardElement) => {
 profileButton.addEventListener('click', () => {
   openPopup(profilePopup);
   clearValidation(profileForm, validationConfig);
-  document.querySelector('.popup__form').reset();
   profileFormNameInput.value = profileName.textContent;
   profileFormJobInput.value = profileJob.textContent;
 });
 
 newCardAddButton.addEventListener('click', () => {
   openPopup(newCardAddPopup);
+  addCardForm.reset();
   clearValidation(addCardForm, validationConfig);
-  document.querySelector('.popup__form').reset();
-  addCardFormNameInput.value = '';
-  addCardFormLinkInput.value = '';
 });
 
 profileImg.addEventListener('click', () => {
   openPopup(editAvatarPopup);
+  editAvatarForm.reset();
   clearValidation(editAvatarForm, validationConfig);
-  editAvatarFormLinkInput.value = '';
 });
 
 popups.forEach((popup) => {
@@ -225,7 +222,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     profileJob.textContent = results[0].about;
     profileImg.style.backgroundImage = 'url(' + results[0].avatar + ')';
     results[1].forEach(cardData => {
-      renderCard({ ...cardData, ownerId: results[0]._id});
+      renderCard({ ...cardData, ownerId: results[0]._id}, 'append');
       idCardForDelete = cardData._id;
     })
   })
